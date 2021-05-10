@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="../css/index.css">
+<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+<title>Paprika - Gestion</title>
+<head>
+
+</head>
+
+<body>
+
+    <nav class="navbar m-3" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <img src="https://www.larondavelle.re/sites/default/files/epitech-logo-quadri%20-%20Emilie%20B.png">
+            </a>
+        </div>
+
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                <h1 class="title">
+                    Campus Manager
+                </h1>
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <%=email %>
+                    <form action="/logout?_method=DELETE" method="POST">
+                        <button class="button ml-5" type="submit">
+                            <span class="icon is-small">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </span>
+                        </button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </nav>
+    <div class="columns p-6">
+        <div class="column is-half container">
+            <h2 class="title pb-4" style="text-align: center;">Liste des associations</h2>
+            <table class="table is-striped" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <th>Association</th>
+                        <th>Mail de l'association</th>
+                        <th>Mail du Président</th>
+                        <th>Dernier Event</th>
+                        <th>Evenements</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (assos) { assos.forEach(function(asso){ if (asso.email=="leslie@mail.com") {return;} %>
+                             <tr>
+                                <td>
+                                    <%=asso.name%>
+                                </td>
+                                <td>
+                                    <%=asso.email%>
+                                </td>
+                                <td>
+                                    <% if ((asso.members).filter(o => o.job == "president")[0]) {%> <%= (asso.members).filter(o => o.job == "president")[0].email%> <%}%> 
+                                </td>
+                                <td>
+                                    <% if (allevents.filter(o => o.asso == asso.name)[0]) {%> <%= allevents.filter(o => o.asso == asso.name)[0].name%> <%}%> 
+                                </td>
+                                <td>
+                                    <% if (allevents.filter(o => o.asso == asso.name))  {%> <%= allevents.filter(o => o.asso == asso.name).length %> <%}%> 
+                                </td>
+                                <td>
+                                    <a class="button is-info is-small" type="submit" value="Submit"
+                                        href="/assoInfo?_name=<%=asso.name%>">
+                                        détails
+                                    </a>
+                                </td>
+                                <td>
+
+                                </td>
+                                <td></td>
+                                <!--<td>
+                <form action="/deleteMember?_asso=<%=//asso%>&_email=<//%=member.email%>" method="post">
+                  <button class="button is-white is-small" type="submit" value="Submit">
+                    <span class="icon is-danger">
+                      <i class="fas fa-trash-alt fa-lg"></i>
+                    </span>
+                  </button>
+                </form>
+              </td>-->
+                            </tr>
+                            <%})} %>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

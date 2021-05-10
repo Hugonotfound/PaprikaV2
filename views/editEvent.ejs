@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-divider@1.1.0/dist/bulma-divider.css" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <title>Paprika - événements</title>
+<head>
+
+</head>
+
+<body>
+
+  <nav class="navbar m-3" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <img src="https://www.larondavelle.re/sites/default/files/epitech-logo-quadri%20-%20Emilie%20B.png">
+      </a>
+    </div>
+
+    <div class="navbar-start">
+      <a class="navbar-item" href="/">
+        <h1 class="title">
+          <%=name%>
+        </h1>
+      </a>
+      <div class="navbar-item">
+        <h2 class="subtitle">
+          - <%=eventname%>
+        </h2>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <%=email%>
+          <form action="/logout?_method=DELETE" method="POST">
+            <button class="button ml-5" type="submit">
+              <span class="icon is-small">
+                <i class="fas fa-sign-out-alt"></i>
+              </span>
+            </button>
+          </form>
+      </div>
+    </div>
+    </div>
+  </nav>
+
+  <div class="columns p-6">
+    <div class="column is-12 container">
+      <h2 class="subtitle p-2 pb-0 mb-0">Ajouter un staff sur <b>
+          <%=eventname%>
+        </b> du <b>
+          <%=eventdate%>
+        </b>
+      </h2>
+      <div class="notification is-info has-text-white">
+        <form action="/addStaffToEvent?_asso=<%=name%>" method="POST">
+          <input class="hidden" type="name" name="event_name" id="event_name" value="<%=eventname%>" hidden />
+          <input class="hidden" type="name" name="event_date" id="event_date" value="<%=eventdate%>" hidden />
+          <div class="columns is-fullwidth">
+
+            <div class="column is-half field">
+              <label class="label has-text-white">Email du staff</label>
+              <div class="control">
+                <input class="input" type="email" name="staff_email" id="staff_email" required />
+              </div>
+            </div>
+
+            <div class="column is-half field">
+              <label class="label has-text-white">Nombre d'épices</label>
+              <div class="control">
+                <input class="input" type="number" name="staff_spices" id="staff_spices" min="1" max="60" required />
+              </div>
+            </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button" type="submit">Ajouter un staff à l'événement</button>
+            </div>
+            <% if(typeof error !='undefined' ) {%>
+              <div class="notification is-danger p-3 has-text-centered">
+                <%= error %>
+              </div>
+              <% } %>
+          </div>
+        </form>
+        <div class="divider has-text-white">OU</div>
+          <form action="/addStaffFromFile?_asso=<%=name%>" enctype="multipart/form-data" method="POST">
+            <input class="hidden" type="name" name="event_name" id="event_name" value="<%=eventname%>" hidden />
+            <input class="hidden" type="name" name="event_date" id="event_date" value="<%=eventdate%>" hidden />
+            <div class="columns is-multiline">
+              <div class="column is-one-fifths file has-name" id="file-upload">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="fileToUploadStaff" id="fileToUploadStaff" accept=".csv">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">
+                      Choisissez un fichier .csv
+                    </span>
+                  </span>
+                  <span class="file-name">
+                  </span>
+                </label>
+              </div>
+              <div class="column is-three-fifth">
+                <p class="help is-italic"><b>Format : </b>email,spices</p>
+                <p class="help">pierre.dupond@epitech.eu,25</p>
+                <p class="help">patrick.chirac@epitech.eu,7</p>
+              </div>
+              <div class="column is-one-fifths has-text-right">
+                <div class="control has-text-right">
+                  <button class="button is-success" type="submit">Ajouter depuis le csv</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        <script>
+          const fileInput = document.querySelector('#file-upload input[type=file]');
+          fileInput.onchange = () => {
+            if (fileInput.files.length > 0) {
+              const fileName = document.querySelector('#file-upload .file-name');
+              fileName.textContent = fileInput.files[0].name;
+            }
+          }
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-7">
+    <h2 class="subtitle p-2 pb-0 mb-0">Liste des staffs sur l'évent</h2>
+    <table class="table is-striped" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Epices</th>
+          <th> </th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (allstaffs) { allstaffs.forEach(function(staff){ %>
+          <tr>
+            <td>
+              <%=staff.mail%>
+            </td>
+            <td>
+              <%=staff.spices%>
+            </td>
+            <td></td>
+            <td>
+              <form
+                action="/removeStaffToEvent?event_name=<%=eventname%>&event_date=<%=eventdate%>&staff_mail=<%=staff.mail%>"
+                method="post">
+                <button class="button is-white is-small" type="submit" value="Submit" onclick="clickedMember(event)">
+                  <span class="icon is-danger">
+                    <i class="fas fa-trash-alt fa-lg"></i>
+                  </span>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <%})} %>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+<script>
+  function clickedEvent(e)
+  {
+      if(!confirm('Êtes-vous sur de bien vouloir supprimer cet événement ?')) {
+          e.preventDefault();
+      }
+  }
+  function clickedMember(e)
+  {
+      if(!confirm('Êtes-vous sur de bien vouloir supprimer ce staff de cet événement ?')) {
+          e.preventDefault();
+      }
+  }
+</script>
+</html>

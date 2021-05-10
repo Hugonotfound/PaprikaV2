@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="../css/index.css">
+<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+<script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+<title>Paprika - gestion <%=asso%>
+</title>
+
+<head>
+</head>
+
+<style>
+    .more {
+        display: none;
+    }
+</style>
+
+<body>
+
+    <nav class="navbar m-3" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <img src="https://www.larondavelle.re/sites/default/files/epitech-logo-quadri%20-%20Emilie%20B.png">
+            </a>
+        </div>
+
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                <h1 class="title">
+                    Campus Manager
+                </h1>
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <%=email %>
+                    <form action="/logout?_method=DELETE" method="POST">
+                        <button class="button ml-5" type="submit">
+                            <span class="icon is-small">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </span>
+                        </button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </nav>
+    <div class="columns p-6 is-multiline">
+        <div class="column is-half container">
+            <h2 class="subtitle pb-0 mb-0">Liste des budgets alloués</h2>
+            <table class="table is-striped" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Montant</th>
+                        <th>Date</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form action="/addBudget?asso=<%=asso%> " method="POST">
+                        <tr>
+                            <td>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input" type="text" name="budget_description"
+                                            id="budget_description" required />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input" type="number" name="budget_amount" id="budget_amount"
+                                            min="0" required />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input" type="date" name="budget_date" id="budget_date" required />
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <button class="button is-link is-small" type="submit" value="Submit">
+                                    Ajouter
+                                </button>
+                            </td>
+                        </tr>
+                    </form>
+
+                    <% if (allbudgets) { allbudgets.forEach(function(budget){ %>
+                        <tr>
+                            <td>
+                                <%=budget.description%>
+                            </td>
+                            <td>
+                                <%=budget.budget%>
+                            </td>
+                            <td>
+                                <%=budget.date%>
+                            </td>
+                            <td>
+                                <form
+                                    action="/deleteBudget?_asso=<%=asso%>&_description=<%=budget.description%>&_date=<%=budget.date%>&_budget=<%=budget.budget%>"
+                                    method="post">
+                                    <button class="button is-white is-small" type="submit" value="Submit"
+                                        onclick="clickedMoney(money)">
+                                        <span class="icon is-danger">
+                                            <i class="fas fa-trash-alt fa-lg"></i>
+                                        </span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <%})} %>
+                </tbody>
+            </table>
+        </div>
+        <div class="column is-half container">
+            <h2 class="subtitle pb-0 mb-0">Notes</h2>
+            <table class="table is-striped" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form action="/addNotes?asso=<%=asso%> " method="POST">
+                        <tr>
+                            <td>
+                                <div class="field">
+                                    <div class="control">
+                                        <textarea class="textarea" name="notes_description" id="notes_description"
+                                            placeholder="Mes Notes"></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input" type="date" name="notes_date" id="notes_date" required />
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <button class="button is-link is-small" type="submit" value="Submit">
+                                    Ajouter
+                                </button>
+                            </td>
+                        </tr>
+                    </form>
+
+                    <% if (allnotes) { allnotes.forEach(function(notes){ %>
+                        <tr>
+                            <td>
+                                <% if (notes.body.length> 90) {%>
+                                    <%= notes.body.slice(0, 89)%>
+                                        <span id="dots-<%=notes._id%>">...</span><span class="more"
+                                            id="more-<%=notes._id%>">
+                                            <%= notes.body.slice(89, notes.body.length)%>
+                                        </span>
+                                        <button onclick="myFunction('<%=notes._id%>')" id="myBtn-<%=notes._id%>"
+                                            class="is-underline has-text-info"
+                                            style=" background:none;border:none;margin:0;padding:0;cursor: pointer;">Voir
+                                            plus -></button></p>
+                                        <% } else {%>
+                                            <%= notes.body%>
+                                                <% }%>
+                            </td>
+                            <td>
+                                <%=notes.date%>
+                            </td>
+                            <td>
+                                <form
+                                    action="/deleteNotes?_asso=<%=asso%>&_description=<%=notes.body%>&_date=<%=notes.date%>"
+                                    method="post">
+                                    <button class="button is-white is-small" type="submit" value="Submit"
+                                        onclick="clickedMoney(money)">
+                                        <span class="icon is-danger">
+                                            <i class="fas fa-trash-alt fa-lg"></i>
+                                        </span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <%})} %>
+                            <script>
+                                function myFunction(elem) {
+                                    var dots = document.getElementById("dots-" + elem);
+                                    var moreText = document.getElementById("more-" + elem);
+                                    var btnText = document.getElementById("myBtn-" + elem);
+
+                                    if (dots.style.display === "none") {
+                                        console.log("In One")
+                                        dots.style.display = "inline";
+                                        btnText.innerHTML = "Voir plus";
+                                        moreText.style.display = "none";
+                                    } else {
+                                        console.log("In Two")
+                                        dots.style.display = "none";
+                                        btnText.innerHTML = "Voir moins";
+                                        moreText.style.display = "inline";
+                                    }
+                                }
+                            </script>
+                </tbody>
+            </table>
+        </div>
+        <div class="column is-half container">
+            <h2 class="subtitle pb-0 mb-0">Liste des événements</h2>
+            <table class="table is-striped" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Date</th>
+                        <th></th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (allevents) { allevents.forEach(function(event){ %>
+                        <tr>
+                            <td>
+                                <%=event.name%>
+                            </td>
+                            <td>
+                                <%=event.date%>
+                            </td>
+                            <td>
+                                <a class="button is-info is-small" type="submit" value="Submit"
+                                    href="/editEvent?_name=<%=event.name%>&_date=<%=event.date%>&_asso=<%=asso%>">
+                                    Liste des staffs
+                                </a>
+                            </td>
+                            <td>
+                                <form action="/deleteEvent?_asso=<%=asso%>&_event=<%=event.name%>&_date=<%=event.date%>"
+                                    method="post">
+                                    <button class="button is-white is-small" type="submit" value="Submit"
+                                        onclick="clickedEvent(event)">
+                                        <span class="icon is-danger">
+                                            <i class="fas fa-trash-alt fa-lg"></i>
+                                        </span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <%})} %>
+                </tbody>
+            </table>
+            <form action="/getCSV?asso=<%=asso%> " method="POST">
+                <button class="button is-info" type="submit">récupérer le récapitulatif .csv</button>
+            </form>
+        </div>
+
+        <div class="column is-half container">
+            <h2 class="subtitle pb-0 mb-3">Liste des membres</h2>
+            <script type="text/javascript">
+                function change() {
+                    valeurPromo = document.getElementById("promo").value;
+                    valeurStaff = document.getElementById("staff").value;
+                    window.location.replace("/assoInfo?_name=" + document.getElementById("association").value + "&_member_promo=" + valeurPromo + "&_member_poste=" + valeurStaff);
+                }
+            </script>
+            <form onsubmit="change();">
+                <input type="text" id="association" value="<%=asso%>" hidden>
+                <div class="field is-grouped">
+                    <div class="field is-horizontal mr-5">
+                        <div class="field-label is-normal">
+                            <label class="label">Promo</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <div class="select is-fullwidth">
+                                        <select id='promo' onchange="change();">
+                                            <option value="Toutes">Choisir</option>
+                                            <option>Toutes</option>
+                                            <option>2021</option>
+                                            <option>2022</option>
+                                            <option>2023</option>
+                                            <option>2024</option>
+                                            <option>2025</option>
+                                            <option>2026</option>
+                                            <option>2027</option>
+                                            <option>2028</option>
+                                            <option>2029</option>
+                                            <option>2030</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-5 field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Postes</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <div class="select is-fullwidth">
+                                        <select id='staff' onchange="change();">
+                                            <option value="Tous">Choisir</option>
+                                            <option>Tous</option>
+                                            <option>Staff</option>
+                                            <option>Bureau</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <h4 class="is-size-6">
+                <%= allmembers.length%> membres affichés
+            </h4>
+            <table class="table is-striped" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Promo</th>
+                        <th>Poste</th>
+                        <th>Epices</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (allmembers) { allmembers.forEach(function(member){ %>
+                        <tr>
+                            <td>
+                                <%=member.email %>
+                            </td>
+                            <td>
+                                <%= member.promo%>
+                            </td>
+                            <td>
+                                <%= member.job%>
+                            </td>
+                            <td>
+                                <% var spices=0; allevents.forEach(function (event) { if (event.staffs) {
+                                    (event.staffs).forEach(function (staff) { if (staff.mail==member.email) spices
+                                    +=parseInt(staff.spices); }) }})%>
+                                    <%= spices %>
+                            </td>
+                            <td>
+                                <form action="/deleteMember?_asso=<%=asso%>&_email=<%=member.email%>" method="post">
+                                    <button class="button is-white is-small" type="submit" value="Submit"
+                                        onclick="clickedMember(event)">
+                                        <span class="icon is-danger">
+                                            <i class="fas fa-trash-alt fa-lg"></i>
+                                        </span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <%})} %>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    function clickedEvent(e) {
+        if (!confirm('Êtes-vous sur de bien vouloir supprimer cet événement ?')) {
+            e.preventDefault();
+        }
+    }
+    function clickedMember(e) {
+        if (!confirm('Êtes-vous sur de bien vouloir supprimer ce membre ?')) {
+            e.preventDefault();
+        }
+    }
+    function clickedMoney(e) {
+        if (!confirm('Êtes-vous sur de bien vouloir supprimer ce budget alloué ?')) {
+            e.preventDefault();
+        }
+    }
+</script>
+
+</html>

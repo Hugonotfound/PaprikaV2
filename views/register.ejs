@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../css/index.css">
+  <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <title>Paprika - Enregistrement</title>
+</head>
+
+<body>
+  <nav class="navbar m-3" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <img src="https://www.larondavelle.re/sites/default/files/epitech-logo-quadri%20-%20Emilie%20B.png">
+      </a>
+    </div>
+    <div class="navbar-start">
+      <a class="navbar-item" href="/">
+        <h1 class="title">
+          PAPRIKA
+        </h1>
+      </a>
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+      <a class="button ml-5 is-warning" type="submit" href="/login">Se connecter</a>
+      </div>
+    </div>
+    </div>
+  </nav>
+  <h2 class="title" style="text-align: center;">Enregistrer son association</h2>
+  <div class="columns mt-5">
+    <div class="column is-one-fifth"></div>
+    <div class="column notification is-info has-text-white p-5">
+      <form action="/register" method="POST">
+        <% if (messages.error) { %>
+          <p>
+            <%= messages.error %>
+          </p>
+          <% } %>
+          <h2 class="subtitle">Infos de l'association</h2>
+            <div class="has-text-centered is-centered" style="width: 60%;margin-left: 20%;">
+              <div class="field">
+                <label class="label has-text-white">Nom de l'association</label>
+                <div class="control has-icons-left ">
+                  <input class="input" type="text" name="name" id="name" required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                  </span>
+                </div>
+              </div>
+              <br>
+              <div class="field">
+                <label class="label has-text-white">Mail de l'association (utilisé pour la connexion)</label>
+                <div class="control has-icons-left">
+                  <input class="input" type="email" name="email" id="email" required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+              </div>
+              <br>
+              <div class="field">
+                <label class="label has-text-white">Mot de passe</label>
+                <div class="control has-icons-left">
+                  <input class="input" type="password" name="password" id="password" required />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="columns p-3">
+              <div class="column">
+                <h2 class="subtitle">Infos du président(e)</h2>
+                <div class="field mt-5">
+                  <label class="label has-text-white">Mail</label>
+                  <div class="control has-icons-left">
+                    <input class="input" type="email" name="email_pres" id="email_pres" required />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Promotion</label>
+                  <div class="control has-icons-left">
+                    <input class="input" type="number" name="promo_pres" id="promo_pres" min="2021" max="2035" required />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+                <br>
+              </div>
+              <div class="column">
+                <h2 class="subtitle">Infos du trésorier(e)</h2>
+                <div class="field mt-5">
+                  <label class="label has-text-white">Mail</label>
+                  <div class="control has-icons-left">
+                    <input class="input" type="email" name="email_tres" id="email_tres" required />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Promotion</label>
+                  <div class="control has-icons-left">
+                    <input class="input" type="number" name="promo_tres" id="promo_tres" min="2021" max="2035" required />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <br>
+              <div class="column">
+                <h2 class="subtitle">Infos du secrétaire</h2>
+                <div class="field mt-5">
+                  <label class="label has-text-white">Mail</label>
+                  <div class="control has-icons-left">
+                    <input class="input" type="email" name="email_secr" id="email_secr" required />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Promotion</label>
+                  <div class="control has-icons-left">
+                    <input class="input" type="number" name="promo_secr" id="promo_secr" min="2021" max="2035" required />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="control has-text-centered">
+              <button class="button is-link" type="submit">Enregistrer mon association</button>
+            </div>
+      </form>
+    </div>
+    <div class="column is-one-fifth"></div>
+  </div>
+</body>
+
+</html>
+
+<!--<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="../css/index.css">
+  <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+</head>
+  
+<body>
+  <div class="imageback">
+		<div class="topnav">
+			<div class="nav-header">
+				<div class="nav-title">
+					<h1 class="title is-capitalized has-text-weight-bold">PAPRIKA</h1>
+				</div>
+			</div>
+		</div>
+		<div class="container-top">
+			<div class="login-content">
+				<form action="/register" method="POST">
+          <%// if (messages.error) { %>
+            <p>
+              <%//= messages.error %>
+            </p>
+            <%// } %>
+					<img src="../img/avatar.png">
+					<h2 class="title">Enregistrer son asso</h2>
+          <div class="input-div one">
+						<div class="i">
+							<i class="fas fa-user"></i>
+						</div>
+						<div class="div">
+							<h5>Nom de l'association</h5>
+							<input type="text" class="input" id="name" name="name">
+						</div>
+					</div>
+					<div class="input-div one">
+						<div class="i">
+							<i class="fas fa-user"></i>
+						</div>
+						<div class="div">
+							<h5>Mail de l'association</h5>
+							<input type="email" class="input" id="email_pres" name="email_pres">
+						</div>
+            <div class="div">
+							<h5>Mot de Passe</h5>
+							<input type="password" class="input" id="password" name="password">
+						</div>
+            <div class="div">
+							<h5>Mail du président</h5>
+							<input type="email" class="input" id="email_pres" name="email_pres">
+						</div>
+					</div>
+          <h5>Promotion du président</h5>
+          <div class="control is-expanded">
+            <div class="select is-fullwidth">
+              <select name="promo_pres">
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+          </div>
+					<div class="input-div pass">
+						<div class="i">
+							<i class="fas fa-lock"></i>
+						</div>
+					</div>
+          <div class="input-div one">
+						<div class="i">
+							<i class="fas fa-user"></i>
+						</div>
+						<div class="div">
+							<h5>Mail du trésorier</h5>
+							<input type="email" class="input" id="email_tres" name="email_tres">
+						</div>
+					</div>
+          <h5>Promotion du trésorier</h5>
+          <div class="control is-expanded">
+            <div class="select is-fullwidth">
+              <select name="promo_tres">
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-div one">
+						<div class="i">
+							<i class="fas fa-user"></i>
+						</div>
+						<div class="div">
+							<h5>Mail du secrétaire</h5>
+							<input type="email" class="input" id="email_secr" name="email_secr">
+						</div>
+					</div>
+          <h5>Promotion du secrétaire</h5>
+          <div class="control is-expanded">
+            <div class="select is-fullwidth">
+              <select name="promo_secr">
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+          </div>
+					<a href="#">Mot de Passe Oublié ?</a>
+					<div style="width:100%;">
+						<input type="submit" class="btn" value="enregistrer">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+-->
+<!--<h1>Enregistrez votre asso!</h1>
+<form action="/register" method="POST">
+  <div>
+    <label for="name">Nom de l'asso</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+  <div>
+    <label for="president_mail">Email du président</label>
+    <input type="text" id="president_mail" name="president_mail" required>
+  </div>
+  <div>
+    <label for="treasurer_mail">Email du trésorier</label>
+    <input type="text" id="treasurer_mail" name="treasurer_mail" required>
+  </div>
+  <div>
+    <label for="secretary_mail">Email du secrétaire</label>
+    <input type="text" id="secretary_mail" name="secretary_mail" required>
+  </div>
+  <div>
+    <h2>Partie connexion</h2>
+    <label for="email">Email du président</label>
+    <input type="email" id="email" name="email" required>
+    <p>Vous devrez utiliser l'adresse mail du président de l'association pour vous connecter</p>
+  </div>
+  <div>
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" required>
+  </div>
+  <button type="submit">Enregistrement</button>
+</form>
+<a href="/login">Login</a>-->
