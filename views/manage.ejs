@@ -78,28 +78,78 @@
                                         détails
                                     </a>
                                 </td>
-                                <td>
-
-                                </td>
-                                <td></td>
-                                <!--<td>
-                <form action="/deleteMember?_asso=<%=//asso%>&_email=<//%=member.email%>" method="post">
-                  <button class="button is-white is-small" type="submit" value="Submit">
-                    <span class="icon is-danger">
-                      <i class="fas fa-trash-alt fa-lg"></i>
-                    </span>
-                  </button>
-                </form>
-              </td>-->
                             </tr>
                             <%})} %>
                 </tbody>
             </table>
         </div>
-
-
     </div>
-
+    <div class="columns p-6">
+        <div class="column is-half container">
+            <h2 class="title pb-4" style="text-align: center;">Liste des étudiant</h2>
+            <div class="columns p-6">
+                <div class="column is-half container">
+                  <h2 class="subtitle p-2 pb-0 mb-0">Ajouter un étudiant</h2>
+                  <div class="notification is-link has-text-white">
+                    <form action="/addStudent" method="POST">
+                      <div class="field">
+                        <label class="label has-text-white">Mail</label>
+                        <div class="control has-icons-left ">
+                          <input class="input" type="email" name="memberemail" id="memberemail" required />
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label has-text-white">Promotion</label>
+                        <div class="control has-icons-left">
+                          <input class="input" type="text" name="memberpromo" id="memberpromo" required />
+                          <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="columns is-vcentered is-multiline">
+                        <div class=" column field has-text-right">
+                          <div class="control">
+                            <button class="button is-success" type="submit">Ajouter l'étudiant</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="divider has-text-white">OU</div>
+                    <form action="/addStudentFromFile" enctype="multipart/form-data" method="POST">
+                        <div class="columns is-multiline">
+                            <div class="column is-one-fifths file has-name" style="margin-top: 2px;" id="file-upload">
+                                <label class="file-label">
+                                <input class="file-input " type="file" name="fileToUploadUser" id="fileToUploadUser" accept=".csv">
+                                <span class="file-cta">
+                                <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                             </span>
+                    <span class="file-label">
+                      Choisissez un fichier .csv
+                    </span>
+                  </span>
+                  <span class="file-name">
+                  </span>
+                </label>
+              </div>
+              <div class="column is-three-fifth">
+                <p class="help is-italic"><b>Format : </b>email,promotion</p>
+                <p class="help">pierre.dupond@epitech.eu,2025</p>
+                <p class="help">patrick.chirac@epitech.eu,2022</p>
+              </div>
+              <div class="column is-one-fifths has-text-right">
+                <div class="control has-text-right">
+                  <button class="button is-success" type="submit">Ajouter depuis le csv</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 </body>
 
 </html>

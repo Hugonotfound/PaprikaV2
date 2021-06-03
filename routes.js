@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const Event = require("./models/Event")
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const { events } = require('./models/Asso');
+const User = require('./models/User')
 const multer = require('multer');
 const uuid = require('uuid').v4
 const fs = require('fs')
@@ -159,14 +160,13 @@ router.post('/getCSV', checkAuthenticated, async (req, res) => {
       data.push(oneman)
     })
   })
-
   const csvWriter = createCsvWriter({
-    path: 'public/upload/extract_paprika.csv',
+    path: 'public/downloads/extract_paprika.csv',
     header: header
   })
   await csvWriter.writeRecords(data)
-    .then(() => { console.log('csv created') })
-  var file = 'public/upload/extract_paprika.csv';
+    .then(() => { console.log('New CSV file created') })
+  var file = 'public/downloads/extract_paprika.csv';
   res.download(file);
 })
 
@@ -225,17 +225,22 @@ router.post('/addMember', checkAuthenticated, async (req, res, next) => {
       }
     });
   })
-
   if (is_same == true) {
     res.redirect("/" + "?error=oui");
   } else {
-    Asso.findOneAndUpdate({ name: req.query._asso }, {
-      $push: {
-        members: { email: req.body.member_email, promo: req.body.member_promo, job: req.body.member_job }
+    await User.findOne({ email: req.body.member_email}, async function (err, result) {
+      if (result != null) {
+        Asso.findOneAndUpdate({ name: req.query._asso }, {
+          $push: {
+            members: { email: req.body.member_email, promo: req.body.member_promo, job: req.body.member_job }
+          }
+        }, function (err, model) {
+          res.redirect("/");
+        })
+      } else {
+        res.redirect("/");
       }
-    }, function (err, model) {
-      res.redirect("/");
-    })
+    }) 
   }
 })
 
@@ -285,18 +290,53 @@ router.post('/addMemberFromFile', checkAuthenticated, upload.single('fileToUploa
     .pipe(csv({}))
     .on('data', (data) => results.push(data))
     .on('end', async () => {
-      await results.forEach(async function (result) {
-        console.log('DU COUP: ' + JSON.stringify(result))
-        console.log('ASSO NAME: ' + req.query._asso)
-        await Asso.findOneAndUpdate({ name: req.query._asso }, {
-          $push: {
-            members: { email: result.email, promo: result.promotion, job: result.poste }
+      await results.forEach(async function (person) {
+        await User.findOne({ email: person.email}, async function (err, result) {
+          if (result != null) {
+            await Asso.findOneAndUpdate({ name: req.query._asso }, {
+              $push: {
+                members: { email: result.email, promo: result.promotion, job: result.poste }
+              }
+            })
           }
-        })
       })
-      res.redirect("/");
     })
+  })
+  res.redirect('/');
 })
+
+router.post('/addStudent', checkAuthenticated, async (req, res, next)  => {
+  const student = new User({
+    email: req.body.memberemail,
+    promo: req.body.memberpromo
+  })
+  newStudent = await student.save()
+  res.redirect("/manage");
+})
+
+router.post('/addStudentFromFile', checkAuthenticated, upload.single('fileToUploadUser'), async (req, res, next) => {
+  const results = [];
+  fs.createReadStream(req.file.path)
+  .pipe(
+    csv({}),
+  )
+  .on('data', (data) => results.push(data))
+  .on('end', async () => {
+    results.forEach(async function (toAdd) {
+      await User.findOne({ email : toAdd.email}, async function (err, response) {
+        if (err) {
+          const student = new User({
+            email: toAdd.email,
+            promo: toAdd.promo
+          })
+          const newUser = await student.save()
+        }
+      })
+    })
+    res.redirect('/manage')
+    //console.log(results)
+  })
+});
 
 router.post('/addStaffFromFile', checkAuthenticated, upload.single('fileToUploadStaff'), async (req, res, next) => {
   var isright = false;
@@ -311,14 +351,6 @@ router.post('/addStaffFromFile', checkAuthenticated, upload.single('fileToUpload
       //ca ajouter les staffs
       await Asso.findOne({ name: req.user.name }, function (err, response) {
         results.forEach(async function (toAdd) {
-          /*await Event.findOne({ name: req.body.event_name }, function (err, response) {
-            response.staffs.forEach(function (staff) {
-              console.log('email 1: ' + staff.mail + ' et email 2: ' + toAdd.email)
-              if (toAdd.pop()) {
-                return;
-              }
-            })
-          })*/
           await Asso.findOne({ name: req.user.name }, function (err, response) {
             (response.members).some(function (a) {
               if (a.email === toAdd.email) {

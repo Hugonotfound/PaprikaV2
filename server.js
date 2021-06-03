@@ -8,6 +8,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
+const User = require("./models/Event")
 
 require('./passport-config')(passport)
 app.use(passport.initialize());
@@ -29,26 +30,24 @@ app.use('/img', express.static(__dirname + 'public/img'))
 app.use('/js', express.static(__dirname + 'public/js'))
 app.use('/upload', express.static(__dirname + 'public/upload'))
 
-//passport for office login
-
 passport.use(new AzureAdOAuth2Strategy({
   base: 'https://login.microsoftonline.com/',
-  clientID: '035fa40c-aa47-423f-9791-6882f184dd62',
-  clientSecret: '4a90e143-f72e-4bed-9ec0-fffa815fc231',
+  clientID: 'df3f0c32-e8bb-4845-a88a-266759d672ab',
+  clientSecret: '26e27bbd-d61a-4a65-8231-effc8476d19b',
   resource:  'https://graph.microsoft.com/',
   redirectURL : '/auth/azureadoauth2/callback',
-  logoutURL : 'https://localhost:3000/auth/logout'
+  logoutURL : 'https://localhost/login'
 },
-(accessToken, refresh_token, params, profile, cb) => {
-  const userProfile = jwt.decode(params.id_token, '', true);
-  console.log(userProfile.name);
-  user = { ...userProfile };
-  return cb(null, userProfile);
-}));
+function (accessToken, refresh_token, params, profile, done) {
+  var decodedProfile = profile || jwt.decode(params.id_token, '', true);
+
+  console.log(decodedProfile);
+}
+));
 
 app.get('/auth/azureadoauth2', passport.authenticate('azure_ad_oauth2', {
   session: false,
-  scope: ["profile", "email"],
+  scope: ["profile"],
 failureRedirect: '/login'
 }));
 
@@ -58,7 +57,7 @@ failureRedirect: '/login'
 }),
 function(req, res) {
 console.log("get the profile");
-res.redirect('/profile');
+res.redirect('/');
 });
 
 app.set('view-engine', 'ejs')
@@ -80,7 +79,7 @@ app.get('*', function(req, res, next){
   if (req.accepts('html')) {
     res.render('404.ejs', { url: req.url });
     return;
-  }  
+  }
   res.type('txt').send('Not found');
 });
 
